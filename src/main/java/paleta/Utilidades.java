@@ -1,4 +1,4 @@
-package invasion;
+package paleta;
 
 public class Utilidades {
     

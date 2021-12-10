@@ -1,4 +1,4 @@
-package invasion;
+package paleta;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

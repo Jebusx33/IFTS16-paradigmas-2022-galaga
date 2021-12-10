@@ -1,4 +1,4 @@
-package invasion;
+package paleta;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -16,8 +16,8 @@ public class EnemigoImagen extends Enemigo {
     public EnemigoImagen(int posicionX, int posicionY, double velocidadX, double velocidadY, int ancho, int largo,
             Color color) {
         super(posicionX, posicionY, velocidadX, velocidadY, ancho, largo, color);
-       //String path = Paths.get(EnemigoImagen.class.getClassLoader().getResource("imagenes/android.png").getPath()).toString();
-        String path = "/D:/JAVA/eclipse-workspace/IFTS-16-General-Juego-Paleta/target/classes/imagenes/android.png";
+        String path = "D:/JAVA/eclipse-workspace/IFTS-16-2021-Invasion/src/main/resources/imagenes/android.png";
+        /*Paths.get(EnemigoImagen.class.getClassLoader().getResource("imagenes/android.png").getPath()).toString();*/
         try {
             this.img = ImageIO.read(new File(path));
         } catch (IOException e) {

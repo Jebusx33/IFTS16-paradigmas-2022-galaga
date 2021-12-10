@@ -1,4 +1,4 @@
-package invasion;
+package paleta;
 
 import java.awt.Color;
 import java.awt.Font;
