@@ -38,7 +38,7 @@ public class ventana {
        // ventana.setResizable(false);//para que no cambie de tamaño
        
         // Crear un "JPanel" llamado Juego y agregarlo a la ventana
-        JuegoPanelE panel = new JuegoPanelE(anchoVentana, largoVentana);
+        Juego panel = new Juego(anchoVentana, largoVentana);
        
         // Agregar a la ventana el JPanel (Panel hereda de JPanel)
         ventana.add(panel);

@@ -1,4 +1,8 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package invasion;
 
 import java.awt.Color;
@@ -10,7 +14,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -18,8 +26,8 @@ import javax.swing.Timer;
  *
  * @author Jesus Arias
  */
-public class JuegoPanelE extends JPanel implements Runnable, KeyListener {
-
+public class Juego extends JPanel implements Runnable, KeyListener {
+    Fondo fondo = new Fondo(this); 
     private static final long serialVersionUID = 1L;
     private int anchoJuego;
     private int largoJuego;
@@ -49,16 +57,17 @@ public class JuegoPanelE extends JPanel implements Runnable, KeyListener {
     public double moviEnemigos = 0.05;
     public boolean derechaEnemigo = true;
     public boolean izquierdaEnemigo = false;
-    public int velocidadEnemigo = 1;
+    public int velocidadEnemigo = 500;
     public Timer enemigosMove;//se encarga del movimiento de los enemigos
     //ataque enemigo
     public int[][] enemigoMovY = new int[2][5];
     public boolean segundaFilaEnemigos = false;
-    public int aleatorio1, aleatorio2;
+    public int aleatorioI, aleatorioJ;
     public int enemigoCaeContador;
     public boolean enemigoAtaca = false;
+    private BufferedImage img;
 
-    public JuegoPanelE(int anchoJuego, int largoJuego) {
+    public Juego(int anchoJuego, int largoJuego) {
         inicializarVentana(anchoJuego, largoJuego);
         // inicializarPelota();
         inicializarPaleta();
@@ -107,7 +116,14 @@ public class JuegoPanelE extends JPanel implements Runnable, KeyListener {
         this.paletaPosicionY = largoJuego - 70;
         this.paletaAncho = 30;
         this.paletaLargo = 60;
-        this.setBackground(Color.yellow);
+       // this.setBackground(Color.yellow);
+        String path = "D:/JAVA/eclipse-workspace/JuegoInvasion/src/main/resources/imagenes/fondoGalaxia.png";
+   	 try {
+		this.img = ImageIO.read(new File(path));
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     }
 
     private void inicializarVentana(int anchoJuego, int largoJuego) {
@@ -151,6 +167,7 @@ public class JuegoPanelE extends JPanel implements Runnable, KeyListener {
         }
     }
 
+   
     private void verificarReboteEntrePelotaYPaleta() {
         if (hayColision(paletaPosicionX, paletaPosicionY, paletaAncho, paletaLargo,
                 pelotaPosicionX, pelotaPosicionY, pelotaAncho, pelotaLargo)) {
@@ -181,11 +198,23 @@ public class JuegoPanelE extends JPanel implements Runnable, KeyListener {
         super.paintComponent(g);
         dibujar(g);
         g2 = (Graphics2D) g;
-        g2.setColor(Color.BLACK);
+        g2.setColor(Color.white);
+        dibujarFondo(g2);
+        mover();
         inicializarEnemigos();
-        
+
     }
 
+    public void mover() {
+        fondo.mover();
+    }
+
+    public void dibujarFondo(Graphics2D g) {
+        fondo.paint(g);
+    }
+    
+    
+    
     public void dibujar(Graphics graphics) {
         dibujarPaleta(graphics);
         dibujarPelota(graphics);
@@ -241,7 +270,7 @@ public class JuegoPanelE extends JPanel implements Runnable, KeyListener {
     }
 
     public void moverEnemigos() {
-        enemigosMove = new Timer(10, new ActionListener() {
+        enemigosMove = new Timer(50, new ActionListener() {
             //lo que queremos que se actualize
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -264,27 +293,25 @@ public class JuegoPanelE extends JPanel implements Runnable, KeyListener {
                 }
                 if (enemigoCaeContador >= 2) {
                     ataqueEnemigo();
-                    repaint();
                 }
-            
                 repaint();
             }
         });
         enemigosMove.start();
-        
     }
 
-    public void ataqueEnemigo() {
-        if (enemigoAtaca == false) {
-            while (enemigoMovY[aleatorio1][aleatorio2] >= 510) {
-                aleatorio1 = (int) (Math.random() * 2);
-                aleatorio2 = (int) (Math.random() * 5);
+    public void ataqueEnemigo(){
+        if (enemigoAtaca == false ) {
+            while (enemigoMovY[aleatorioI][aleatorioJ]>=550) {
+                 aleatorioI= (int)(Math.random()*2);
+                 aleatorioJ= (int)(Math.random()*5);
             }
         }
-        enemigoMovY[aleatorio1][aleatorio2] += 2;
-        if (enemigoMovY[aleatorio1][aleatorio2] >= 510) {
-            enemigoAtaca = false;
-            enemigoCaeContador = 0;
+     enemigoMovY[aleatorioI][aleatorioJ]+=70;
+        if (enemigoMovY[aleatorioI][aleatorioJ]>=250) {
+            enemigoAtaca=false;
+            enemigoCaeContador=0;
+            
         }
     }
 
