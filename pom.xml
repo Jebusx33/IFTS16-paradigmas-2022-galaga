@@ -1,17 +1,7 @@
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-
-	<groupId>Defender</groupId>
-	<artifactId>Invasions</artifactId>
-	<version>1.0-SNAPSHOT</version>
-
-	<properties>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
-	</properties>
-
-	<dependencies>
-	</dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>IFTS16-paradigmas-2022-galaga</groupId>
+  <artifactId>IFTS16-paradigmas-2022-galaga</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>IFTS16-paradigmas-2022-galaga</name>
 </project>
