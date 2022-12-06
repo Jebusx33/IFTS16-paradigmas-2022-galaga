@@ -1,4 +1,4 @@
-package Juego;
+package juego;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,19 +14,26 @@ public class EstrellasGrandes extends Estrellas {
 		this.graphics = graphics;
 	}
 
+
+
 	public EstrellasGrandes(int posicionX, int posicionY, Graphics graphics) {
 		super(posicionX, posicionY, graphics);
-		
+		// TODO Auto-generated constructor stub
+	}
+
+	public EstrellasGrandes(int anchoVentana, int largoVentana, int posicionX, int posicionY, Graphics graphics) {
+		super(anchoVentana, largoVentana, posicionX, posicionY, graphics);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public int multiplicar() {
-		return ThreadLocalRandom.current().nextInt(10, 800);
+		return ThreadLocalRandom.current().nextInt(5, 1800);
 	}
 		
 	@Override
 	public int getPosicionX() {
-		return posicionX = ThreadLocalRandom.current().nextInt(10, 600);
+		return posicionX = ThreadLocalRandom.current().nextInt(5, 1800);
 	}
 	@Override
 	public int getPosicionY() {
@@ -35,41 +42,55 @@ public class EstrellasGrandes extends Estrellas {
 	
 	public void circuloAm(Graphics graphics) {
 		graphics.setColor(Color.YELLOW);
-		graphics.drawOval(getPosicionX(),getPosicionY()*5, 2, 2);
+		graphics.drawOval(getPosicionX(),getPosicionY()*1, 3, 3);
 
 	}
 
 	public void circuloNa(Graphics graphics) {
 		graphics.setColor(Color.ORANGE);
-		graphics.drawOval(getPosicionX(),getPosicionY()*3, 2, 2);
+		graphics.drawOval(getPosicionX(),getPosicionY()*2, 3, 3);
 
 	}
 
 	public void circuloGri(Graphics graphics) {
 		graphics.setColor(Color.GRAY);
-		graphics.drawOval(getPosicionX(),getPosicionY()*3, 2, 2);
+		graphics.drawOval(getPosicionX(),getPosicionY()*7, 3, 3);
 
 	}
 
 	public void circuloGriOsc(Graphics graphics) {
 		graphics.setColor(Color.DARK_GRAY);
-		graphics.drawOval(getPosicionX(),getPosicionY()*3, 2, 2);
+		graphics.drawOval(getPosicionX(),getPosicionY()*3, 3, 3);
 
 	}
 
 	public void circuloBla(Graphics graphics) {
 		graphics.setColor(Color.WHITE);
-		graphics.drawOval(getPosicionX(),getPosicionY()*3, 2, 2);
+		graphics.drawOval(getPosicionX(),getPosicionY()*1, 3, 3);
+
+	}
+	public void circuloRo(Graphics graphics) {
+		graphics.setColor(Color.RED);
+		graphics.drawOval(getPosicionX(),getPosicionY()*1, 3, 3);
 
 	}
 
+
 	
 	public void cantidadEstrellasGrandes(Graphics g) {
+		circuloAm(g);
+		circuloGri(g);
+		circuloBla(g);
+		circuloNa(g);
+		circuloGriOsc(g);
+		circuloRo(g);
+		/*
 		int numRandom = ThreadLocalRandom.current().nextInt(50, 220);
 		for (int i = 0; i < numRandom; i++) {
 		    circuloAm(g);
 			circuloGriOsc(g);
 			circuloGriOsc(g);
+			circuloNegro(g);
 			i++;
 		}
 
@@ -77,12 +98,11 @@ public class EstrellasGrandes extends Estrellas {
 		for (int i = 0; i < numRandoms; i++) {
 			circuloBla(g);
 			circuloNa(g);
+			circuloNegro(g);
 			i++;
 		}
-
+*/
 	}
-
-
 
 
 	

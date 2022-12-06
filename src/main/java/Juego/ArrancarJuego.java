@@ -5,13 +5,17 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-public class Inicializar {
-	public static void main(String[] args) {
-        
+public class ArrancarJuego {
+
+    public static void main(String[] args) {
 
         // Propiedades del Juego
         int anchoVentana = 800;
         int largoVentana = 600;
+        int tiempoDeEsperaEntreActualizaciones = 5;
+        int enemigosPorLinea = 10;
+        int filasDeEnemigos = 6;
+        int vidas = 3;
 
         // Activar aceleracion de graficos en 2 dimensiones
         System.setProperty("sun.java2d.opengl", "true");
@@ -21,31 +25,35 @@ public class Inicializar {
 
         // Cerrar la aplicacion cuando el usuario hace click en la 'X'
         ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
+        //Para que no cambie le tamaño de la ventana
+        ventana.setResizable(false);   
         // Abrir la ventana en el centro de la pantalla
         ventana.setLocationRelativeTo(null);
 
         // Mostrar la ventana
         ventana.setVisible(true);
+           
+        // Crear un "Jpanel" llamado Juego y agregarlo a la ventana
+        Juego juego = new Juego(anchoVentana, largoVentana, tiempoDeEsperaEntreActualizaciones, enemigosPorLinea,
+                filasDeEnemigos, vidas);
+        juego.setBackground(Color.BLACK); 
+        // Agregar a la ventana el JComponent (Juego hereda de JComponent)
+        ventana.add(juego);
 
-        // Crear un "JPanel" llamado Juego y agregarlo a la ventana
-        Panel panel = new Panel(anchoVentana, largoVentana);
-        panel.setBackground(Color.BLACK); 
-   
-        // Agregar a la ventana el JPanel (Panel hereda de JPanel)
-        ventana.add(panel);
+        // Enviar los eventos recibidos de movimientos del teclado al juego (esto es
+        // porque la clase Juego implementa: MouseMotionListener)
+        ventana.addKeyListener(juego);
 
         // Achicar la ventana lo maximo posible para que entren los componentes
-        ventana.pack();		
-        
+        ventana.pack();
 
         // Crear un thread y pasarle como parametro al juego que implementa la interfaz
         // "Runnable"
-        Thread hilo = new Thread(panel);
+        Thread thread = new Thread(juego);
 
         // Arrancar el juego
-        hilo.start();
+        thread.start();
 
-		
-   }
+    }
+
 }
