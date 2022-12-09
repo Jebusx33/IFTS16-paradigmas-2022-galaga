@@ -32,49 +32,49 @@ public class EstrellasPequenias extends Estrellas {
 	
 	@Override
 	public int getPosicionX() {
-		return posicionX = ThreadLocalRandom.current().nextInt(1, 1800);
+		return posicionX = multiplicar();
 	}
 	public void puntoRo() {
 		posicionY = multiplicar() * 3;
 		graphics.setColor(Color.RED);
-		graphics.drawOval(getPosicionX(), posicionY, 2, 2);
+		graphics.fillOval(getPosicionX(), posicionY, 3, 3);
 	}
 
 	public void puntoNa() {
 		posicionY = multiplicar() * 1;
 		graphics.setColor(Color.ORANGE);
-		graphics.drawOval(getPosicionX(), posicionY, 2, 2);
+		graphics.fillOval(getPosicionX(), posicionY, 3, 3);
 
 	}
 
 	public void puntoAz() {
 		posicionY = multiplicar() + 1;
 		graphics.setColor(Color.BLUE);
-		graphics.drawOval(getPosicionX(), posicionY, 2, 2);
+		graphics.fillOval(getPosicionX(), posicionY, 3, 3);
 	}
 
 	public void puntoGri() {
 		posicionY = multiplicar() + 1;
 		graphics.setColor(Color.GRAY);
-		graphics.drawOval(getPosicionX(), posicionY, 2, 2);
+		graphics.fillOval(getPosicionX(), posicionY, 3, 3);
 	}
 
 	public void puntoBla() {
 		posicionY = multiplicar() * 1;
 		graphics.setColor(Color.RED);
-		graphics.drawOval(getPosicionX(), posicionY, 2, 2);
+		graphics.fillOval(getPosicionX(), posicionY, 3, 3);
 	}
 
 	public void puntoGriOsc() {
 		posicionY = multiplicar() * 2;
 		graphics.setColor(Color.DARK_GRAY);
-		graphics.drawOval(getPosicionX(), posicionY, 2, 2);
+		graphics.fillOval(getPosicionX(), posicionY, 3, 3);
 	}
 
 	public void puntoAm() {
 		posicionY = multiplicar() * 3;
 		graphics.setColor(Color.YELLOW);
-		graphics.drawOval(getPosicionX(), posicionY, 2, 2);
+		graphics.fillOval(getPosicionX(), posicionY, 3, 3);
 	}
 
 	public void cantidadEstrellasPequeñas() {

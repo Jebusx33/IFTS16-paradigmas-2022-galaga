@@ -1,0 +1,41 @@
+package juego;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+
+import javax.imageio.ImageIO;
+
+public class EnemigoImagen extends Enemigo {
+
+    private BufferedImage img;
+
+    public EnemigoImagen(int posicionX, int posicionY, double velocidadX, double velocidadY, int ancho, int largo,
+            Color color) {
+        super(posicionX, posicionY, velocidadX, velocidadY, ancho, largo, color);
+        String path = "D:/JAVA/eclipse-workspace/IFTS-16-2021-Invasion/src/main/resources/imagenes/android.png";
+        //String path = Paths.get(EnemigoImagen.class.getClassLoader().getResource("").getPath()).toString();
+        try {
+            this.img = ImageIO.read(new File(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void dibujarse(Graphics graphics) {
+        try {
+            graphics.drawImage(img, getPosicionX(), getPosicionY(), this.getAncho(), this.getLargo(), null);
+        } catch (Exception e1) {
+            throw new RuntimeException(e1);
+        }
+    }
+
+    public void destruirse(Graphics graphics) {
+        graphics.setColor(Color.red);
+        graphics.fillOval(getPosicionX(), getPosicionY(), getAncho(), getLargo());
+    }
+
+}

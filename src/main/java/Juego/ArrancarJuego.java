@@ -10,8 +10,8 @@ public class ArrancarJuego {
     public static void main(String[] args) {
 
         // Propiedades del Juego
-        int anchoVentana = 800;
-        int largoVentana = 600;
+        int anchoVentana = 1024;
+        int largoVentana = 720;
         int tiempoDeEsperaEntreActualizaciones = 5;
         int enemigosPorLinea = 10;
         int filasDeEnemigos = 6;
