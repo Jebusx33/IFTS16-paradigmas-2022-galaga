@@ -13,8 +13,8 @@ public class ArrancarJuego {
         int anchoVentana = 1024;
         int largoVentana = 720;
         int tiempoDeEsperaEntreActualizaciones = 5;
-        int enemigosPorLinea = 10;
-        int filasDeEnemigos = 6;
+        int enemigosPorLinea = 4;
+        int filasDeEnemigos = 2;
         int vidas = 3;
 
         // Activar aceleracion de graficos en 2 dimensiones

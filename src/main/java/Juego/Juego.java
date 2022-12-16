@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -128,8 +127,12 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 			naveJugador.setVelocidadX(0);
 		}
 		if (arg0.getKeyCode() == KeyEvent.VK_SPACE) {
-			disparos.add(new Disparo((naveJugador.getPosicionX()) + 15, largoJuego - 50, 0, -5, 6, 12, Color.yellow));
-			disparos.add(new Disparo((naveJugador.getPosicionX()) + 51, largoJuego - 50, 0, -5, 6, 12, Color.yellow));
+			// disparos.add(new Disparo((naveJugador.getPosicionX()) + 15, largoJuego - 50,
+			// 0, -1, 6, 15, Color.yellow));
+			// disparos.add(new Disparo((naveJugador.getPosicionX()) + 51, largoJuego - 50,
+			// 0, -1, 6, 15, Color.yellow));
+			disparos.add(new Disparo((naveJugador.getPosicionX() - 18) + 51, largoJuego - 80, 0, -1, 6, 15, Color.yellow));
+			
 		}
 	}
 
@@ -177,10 +180,8 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 		for (ElementoBasico disparo : disparos) {
 			disparo.moverse();
 		}
-		/*
-		 * for(ElementoBasico pelotita: pelotitas) { pelotita.moverse(); }
-		 */
-		// moverEnemigos();
+
+		moverEnemigos();
 	}
 
 	private void dibujarJuego() {
@@ -230,10 +231,12 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 	// moverse() actualiza la posicionX y posicionY del elemento en base a la
 	// direccion/velocidad que tenia para X e Y
 
-	/*
-	 * private void moverEnemigos() { for (Enemigo enemigo : enemigos) {
-	 * enemigo.moverse(); } }
-	 */
+	private void moverEnemigos() {
+		for (Enemigo enemigo : enemigos) {
+			enemigo.moverse();
+		}
+	}
+
 	// Se hace una iteracion en la lista de enemigos y se ejecuta el metodo
 	// dibujarse()
 	private void dibujarEnemigos(Graphics g) {
@@ -249,45 +252,64 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 		// verificarSiPelotaTocaElPiso();
 		// verificarRebotePelotaContraParedLateral();
 		// verificarRebotePelotaContraLaParedSuperior();
-		// verificarReboteEnemigosContraParedesLaterales();
-		// verificarReboteEntreEnemigos();
-		verificarColisionEntreEnemigoYnaveJugador();
+		verificarReboteEnemigosContraParedesLaterales();
+		verificarReboteEntreEnemigos();
+		verificarColisionEntreEnemigoYdisparoNaveJugador();
+		verificarColisionEntreEnemigoYNaveJugador();
 		// verificarFinDeJuego();
 	}
+
 	/*
 	 * // Se iteran todos los enemigos y se verifica para cada enemigo si hay
 	 * colision // con cada enemigo. Si hay colision se ejecuta el metodo
 	 * rebotarEnEjeX() del // enemigo esto hace que el enemigo cambie de direccion
-	 * en el eje X private void verificarReboteEntreEnemigos() { for (Enemigo
-	 * enemigo1 : enemigos) { for (Enemigo enemigo2 : enemigos) { if (enemigo1 !=
-	 * enemigo2 && enemigo1.hayColision(enemigo2)) { enemigo1.rebotarEnEjeX(); } } }
-	 * }
+	 * en el eje X
 	 */
+	private void verificarReboteEntreEnemigos() {
+		for (Enemigo enemigo1 : enemigos) {
+			for (Enemigo enemigo2 : enemigos) {
+				if (enemigo1 != enemigo2 && enemigo1.hayColision(enemigo2)) {
+					enemigo1.rebotarEnEjeX();
+					enemigo1.rebotarEnEjeY();
+					enemigo2.rebotarEnEjeY();
+				}
+
+			}
+		}
+	}
+
 	/*
 	 * // se verifica si hay colision entre la paleta y la pelota. Si hay colision
 	 * se // cambia la direccion de la pelota en el eje Y private void
 	 * verificarReboteEntrePelotaYPaleta() { if (paleta.hayColision(pelota)) {
 	 * pelota.rebotarEnEjeY(); sonidos.tocarSonido("toc"); } }
 	 */
-	/*
-	 * // se verifica si hay colision de cada enemigo contra las paredes laterales,
-	 * si // hay colision se cambia la direccion del enemigo en el eje X private
-	 * void verificarReboteEnemigosContraParedesLaterales() { for (Enemigo enemigo :
-	 * enemigos) { if (enemigo.getPosicionX() <= 0 || enemigo.getPosicionX() +
-	 * enemigo.getAncho() >= anchoJuego) { enemigo.rebotarEnEjeX(); } } }
-	 */
+
+	// se verifica si hay colision de cada enemigo contra las paredes laterales,
+	// si hay colision se cambia la direccion del enemigo en el eje X private
+
+	void verificarReboteEnemigosContraParedesLaterales() {
+		for (Enemigo enemigo : enemigos) {
+			if (enemigo.getPosicionX() <= 100 || enemigo.getPosicionX() + enemigo.getAncho() >= anchoJuego - 100) {
+				enemigo.rebotarEnEjeX();
+			}
+			if (enemigo.getPosicionY() <= -60 || enemigo.getPosicionY() + enemigo.getAncho() >= largoJuego + 40) {
+				enemigo.rebotarEnEjeY();
+			}
+		}
+	}
 
 	// se verifica si la pelota colisiona con cada uno de los enemigos. Si hay
 	// colision se hace rebotar la pelota en el ejeY, se suma un punto y se toca el
 	// sonido toc
-	private void verificarColisionEntreEnemigoYnaveJugador() {
+	private void verificarColisionEntreEnemigoYdisparoNaveJugador() {
 		for (ElementoBasico disparo : disparos) {
 			Iterator<Enemigo> iterador = enemigos.iterator();
 			while (iterador.hasNext()) {
 				Enemigo enemigo = iterador.next();
 				if (enemigo.hayColision(disparo)) {
 					iterador.remove();
-					disparo.setPosicionY(largoJuego-100);
+					disparo.setPosicionY(largoJuego - 1000);
 					// puntaje.sumarPunto();
 					// sonidos.tocarSonido("tic");
 				}
@@ -295,7 +317,33 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 
 		}
 	}
+	private void verificarColisionEntreEnemigoYNaveJugador() {
+		
+			Iterator<Enemigo> iterador = enemigos.iterator();
+			while (iterador.hasNext()) {
+				Enemigo enemigo = iterador.next();
+				if (enemigo.hayColision(naveJugador)) {
+					pantallaEsperar.dibujarse(this.getGraphics());
+					esperar(3000);
+					iterador.remove();
+					// puntaje.sumarPunto();
+					// sonidos.tocarSonido("tic");
+				}
+			}
 
+		
+	}
+/*
+	private void verificarSiPelotaTocaElPiso() {
+		if (pelota.getPosicionY() + pelota.getLargo() >= largoJuego) {
+			//vidas.perderVida();
+			//pelota = createPelota();
+			//sonidos.tocarSonido("muerte");
+			pantallaEsperar.dibujarse(this.getGraphics());
+			esperar(5000);
+		}
+	}
+*/
 	/*
 	 * // Se verifica si la cantidad de enemigos es 0 o si la cantidad de vidas es 0
 	 * // para parar el juego private void verificarFinDeJuego() {
@@ -347,28 +395,83 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 	}
 
 	private void agregarEnemigos(int enemigosPorLinea, int filasDeEnemigos) {
-		for (int x = 1; x < enemigosPorLinea; x++) {
-			for (int y = 1; y < filasDeEnemigos; y++) {
-				Color color = new Color(new Random().nextInt(255), new Random().nextInt(255),
-						new Random().nextInt(255));
-				// Si x es multiplo de 2 agrega un enemigo redondo
-				/*
-				 * if (x % 2 == 0) { agregarEnemigo(new EnemigoRedondo(50 + x * 60, 60 + y * 30,
-				 * 0.5, 0, 20, 20, color)); // si x es multiplo de 3 agrega un enemigo cuadrado
-				 * } else if (x % 3 == 0) { agregarEnemigo(new EnemigoCuadrado(50 + x * 60, 60 +
-				 * y * 30, 0.5, 0, 20, 20, color)); // de lo contrario se agrega un enemigo
-				 * imagen }
-				 */
-				
-				if (y % 2 == 0) {
-					
-				agregarEnemigo(new EnemigoVioleta(250 + x * 60, 20 + y * 20, 0.5, 0, 30, 30, color));
-				}
-				if (y % 2 == 0) {
-					agregarEnemigo(new EnemigoRojoBlanco(250 + x * 60, 100 + y * 20, 0.5, 0, 30, 30, color));
-					}
+		Color color = new Color(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255));
+		double movX;
+		double movY;
+
+		for (int x = 1; x < enemigosPorLinea + 5; x++) {
+			if (x % 2 == 0) {
+
+				agregarEnemigo(new EnemigoVioleta(350 + x * 40, 20 + 4 * 10, 0.5, 0, 30, 30, color));
 			}
 		}
+
+		for (int x = 1; x < enemigosPorLinea + 4; x++) {
+			movX = 0.05;
+			movY = 0.02;
+
+			for (int y = 1; y < filasDeEnemigos + 4; y++) {
+				EnemigoRojoBlanco enemigoRojo = new EnemigoRojoBlanco(250 + x * 60, 65 + y * 20, movX, movY, 30, 30,
+						color);
+				if (y % 2 == 0) {
+					if (enemigoRojo.getPosicionX() < naveJugador.getPosicionX()) {
+						enemigoRojo.setVelocidadX(movX);
+					} else {
+						enemigoRojo.setVelocidadX(-movX);
+					}
+					if (enemigoRojo.getPosicionY() < naveJugador.getPosicionY()) {
+						enemigoRojo.setVelocidadY(movY);
+					} else {
+						enemigoRojo.setVelocidadY(-movY);
+					}
+					agregarEnemigo(enemigoRojo);
+
+				}
+			}
+		}
+
+		for (int x = 1; x < enemigosPorLinea + 6; x++) {
+			movX = 0.1;
+			movY = 0.05;
+
+			for (int y = 1; y < filasDeEnemigos + 2; y++) {
+				for (Enemigo enemigo : enemigos) {
+					enemigo.setVelocidadX(-0.5);
+				}
+				if (y % 2 == 0) {
+
+					agregarEnemigo(
+							new EnemigoAzulAmarillo(190 + x * 60, 150 + y * 20, movX + 0.4, movY, 30, 30, color));
+				}
+			}
+			movX *= (double) x / 90;
+			movY *= (double) x / 50;
+		}
+		for (int x = 1; x < enemigosPorLinea + 6; x++) {
+			movX = 0.5;
+			movY = 0.9;
+			for (int y = 1; y < filasDeEnemigos + 2; y++) {
+				EnemigoAzulAmarillo enemigoAmarillo = new EnemigoAzulAmarillo(190 + x * 60, 190 + y * 20, movX + 0.4,
+						movY, 30, 30, color);
+				if (y % 2 == 0) {
+
+					if (enemigoAmarillo.getPosicionX() < naveJugador.getPosicionX()) {
+						enemigoAmarillo.setVelocidadX(0.5);
+					} else {
+						enemigoAmarillo.setVelocidadX(-0.5);
+					}
+					if (enemigoAmarillo.getPosicionY() < naveJugador.getPosicionY()) {
+						enemigoAmarillo.setVelocidadY(0.5);
+
+					} else {
+						enemigoAmarillo.setVelocidadY(-0.5);
+					}
+					agregarEnemigo(enemigoAmarillo);
+				}
+			}
+
+		}
+
 	}
 
 }

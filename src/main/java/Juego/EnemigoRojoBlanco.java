@@ -15,7 +15,7 @@ public class EnemigoRojoBlanco extends Enemigo {
     public EnemigoRojoBlanco(int posicionX, int posicionY, double velocidadX, double velocidadY, int ancho, int largo,
             Color color) {
         super(posicionX, posicionY, velocidadX, velocidadY, ancho, largo, color);
-        String path = "D:/Agencia de Aprendizaje a lo largo de la vida/Paradigma/Nave-enemigas/src/main/resources/imagenes/Naves/enemigoRojo.png";
+        String path = "D:/Agencia de Aprendizaje a lo largo de la vida/Paradigma/Nave-enemigas-Movimiento/src/main/resources/imagenes/Naves/enemigoRojo.png";
         //String path = Paths.get(EnemigoImagen.class.getClassLoader().getResource("/imagenes/Naves/enemigoAmarilloRojoAzul.png").getPath()).toString();
         try {
             this.img = ImageIO.read(new File(path));
