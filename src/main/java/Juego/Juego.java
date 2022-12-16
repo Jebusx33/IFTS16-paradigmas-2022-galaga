@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
 import javax.swing.JPanel;
 
 // Implemento KeyListener para poder leer en los metodos keyPressed y keyReleased los codigos de tecla que apreto el usuario
@@ -27,8 +26,8 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 	private int tiempoDeEsperaEntreActualizaciones;
 	private ElementoBasico naveJugador;
 	private List<ElementoBasico> disparos;
-	// private Puntaje puntaje;
-	// private Vidas vidas;
+	private Puntaje puntaje;
+	private Vidas vidas;
 	private List<Enemigo> enemigos;
 	// private Sonidos sonidos;
 	private int pantallaActual;
@@ -40,15 +39,14 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 	private PantallaImagen pantallaEsperar;
 	private PantallaPerdedor pantallaPerdedor;
 
-	public Juego(int anchoJuego, int largoJuego, int tiempoDeEsperaEntreActualizaciones, int enemigosPorLinea,
-			int filasDeEnemigos, int vidas) {
+	public Juego(int anchoJuego, int largoJuego, int tiempoDeEsperaEntreActualizaciones, int enemigosPorLinea,int filasDeEnemigos, int vidas) {
 		this.pantallaActual = PANTALLA_INICIO;
 		this.anchoJuego = anchoJuego;
 		this.largoJuego = largoJuego;
 		crearDisparos();
 		this.naveJugador = new NaveJugador(anchoJuego / 2, largoJuego - 80, 0, 0, 60, 20, Color.WHITE);
 		this.enemigos = new ArrayList<Enemigo>();
-		// this.vidas = new Vidas(10, 45, new Font("Arial", 8, 20), Color.blue, vidas);
+		this.vidas = new Vidas(10, 45, new Font("Arial", 8, 20), Color.white, vidas);
 		this.tiempoDeEsperaEntreActualizaciones = tiempoDeEsperaEntreActualizaciones;
 		this.enemigosPorLinea = enemigosPorLinea;
 		this.filasDeEnemigos = filasDeEnemigos;
@@ -64,11 +62,9 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 	private void inicializarJuego() {
 		this.enemigos.clear();
 		this.pantallaPerdedor = null;
-		// this.vidas = new Vidas(10, 45, new Font("Arial", 8, 20), Color.blue,
-		// cantidadVidas);
-		// this.puntaje = new Puntaje(10, 20, new Font("Arial", 8, 20), Color.blue);
+		this.vidas = new Vidas(10, 40, new Font("Arial", 8, 20), Color.white, cantidadVidas);
+		this.puntaje = new Puntaje(100, 40, new Font("Arial", 8, 20), Color.white);
 		agregarEnemigos(enemigosPorLinea, filasDeEnemigos);
-
 	}
 
 	@Override
@@ -95,29 +91,23 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 	}
 
 	public void keyPressed(KeyEvent arg0) {
-
 		if (pantallaActual == PANTALLA_INICIO) {
 			inicializarJuego();
 			pantallaActual = PANTALLA_JUEGO;
 		}
-
 		if (pantallaActual == PANTALLA_PERDEDOR || pantallaActual == PANTALLA_GANADOR) {
 			pantallaActual = PANTALLA_INICIO;
 		}
-
 		if (pantallaActual == PANTALLA_JUEGO) {
-
 			// si mantengo apretada la tecla de la derecha se asigna velocidad 1 a la paleta
 			if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
 				naveJugador.setVelocidadX(1);
 			}
-
 			// si mantengo apretada la tecla de la izquierda se asigna velocidad -1 a la
 			// paleta
 			if (arg0.getKeyCode() == KeyEvent.VK_LEFT) {
 				naveJugador.setVelocidadX(-1);
 			}
-
 		}
 	}
 
@@ -132,7 +122,6 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 			// disparos.add(new Disparo((naveJugador.getPosicionX()) + 51, largoJuego - 50,
 			// 0, -1, 6, 15, Color.yellow));
 			disparos.add(new Disparo((naveJugador.getPosicionX() - 18) + 51, largoJuego - 80, 0, -1, 6, 15, Color.yellow));
-			
 		}
 	}
 
@@ -152,10 +141,8 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 		}
 		if (pantallaActual == PANTALLA_PERDEDOR) {
 			if (this.pantallaPerdedor == null) {
-				// this.pantallaPerdedor = new PantallaPerdedor(anchoJuego, largoJuego,
-				// "imagenes/perdiste.png", this.puntaje.getPuntaje());
-				// igual que arriba pero sin puntos
-				this.pantallaPerdedor = new PantallaPerdedor(anchoJuego, largoJuego, "imagenes/perdiste.png");
+				this.pantallaPerdedor = new PantallaPerdedor(anchoJuego, largoJuego, "imagenes/perdiste.png",
+						this.puntaje.getPuntaje());
 			}
 			pantallaPerdedor.dibujarse(g);
 		}
@@ -165,11 +152,9 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 		if (pantallaActual == PANTALLA_JUEGO) {
 			dibujarDisparos(g);
 			naveJugador.dibujarse(g);
-			/*
-			 * puntaje.dibujarse(g); vidas.dibujarse(g);
-			 */
+			puntaje.dibujarse(g);
+			vidas.dibujarse(g);
 			dibujarEnemigos(g);
-
 		}
 	}
 
@@ -177,11 +162,10 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 	private void actualizarJuego() {
 		verificarEstadoAmbiente();
 		naveJugador.moverse();
+		moverEnemigos();
 		for (ElementoBasico disparo : disparos) {
 			disparo.moverse();
 		}
-
-		moverEnemigos();
 	}
 
 	private void dibujarJuego() {
@@ -203,17 +187,6 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 		}
 	}
 
-	/*
-	 * private void dibujarPelotitas(Graphics graphics) { for(ElementoBasico
-	 * pelotita: pelotitas) { pelotita.dibujarse(graphics); } }
-	 */
-	/*
-	 * private void crearPelotitas() { pelotitas = new ArrayList<ElementoBasico>();
-	 * pelotitas.add(new Pelotita(anchoJuego / 2, largoJuego - 50, 1, -1, 15, 15,
-	 * Color.blue));
-	 * 
-	 * }
-	 */
 	// En ese metodo se cargan los sonidos que estan es src/main/resources
 	/*
 	 * private void cargarSonidos() { try { sonidos = new Sonidos();
@@ -248,15 +221,11 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 	// En este metodo verifico las colisiones, los rebotes de la pelota contra las
 	// paredes, la colision entre enemigos y el fin de juego
 	private void verificarEstadoAmbiente() {
-		// verificarReboteEntrePelotaYPaleta();
-		// verificarSiPelotaTocaElPiso();
-		// verificarRebotePelotaContraParedLateral();
-		// verificarRebotePelotaContraLaParedSuperior();
 		verificarReboteEnemigosContraParedesLaterales();
 		verificarReboteEntreEnemigos();
 		verificarColisionEntreEnemigoYdisparoNaveJugador();
 		verificarColisionEntreEnemigoYNaveJugador();
-		// verificarFinDeJuego();
+		verificarFinDeJuego();
 	}
 
 	/*
@@ -273,7 +242,6 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 					enemigo1.rebotarEnEjeY();
 					enemigo2.rebotarEnEjeY();
 				}
-
 			}
 		}
 	}
@@ -310,48 +278,47 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 				if (enemigo.hayColision(disparo)) {
 					iterador.remove();
 					disparo.setPosicionY(largoJuego - 1000);
-					// puntaje.sumarPunto();
+					puntaje.sumarPunto();
 					// sonidos.tocarSonido("tic");
 				}
 			}
 
 		}
 	}
+
 	private void verificarColisionEntreEnemigoYNaveJugador() {
-		
-			Iterator<Enemigo> iterador = enemigos.iterator();
-			while (iterador.hasNext()) {
-				Enemigo enemigo = iterador.next();
-				if (enemigo.hayColision(naveJugador)) {
-					pantallaEsperar.dibujarse(this.getGraphics());
-					esperar(3000);
-					iterador.remove();
-					// puntaje.sumarPunto();
-					// sonidos.tocarSonido("tic");
-				}
-			}
 
-		
-	}
-/*
-	private void verificarSiPelotaTocaElPiso() {
-		if (pelota.getPosicionY() + pelota.getLargo() >= largoJuego) {
-			//vidas.perderVida();
-			//pelota = createPelota();
-			//sonidos.tocarSonido("muerte");
-			pantallaEsperar.dibujarse(this.getGraphics());
-			esperar(5000);
+		Iterator<Enemigo> iterador = enemigos.iterator();
+		while (iterador.hasNext()) {
+			Enemigo enemigo = iterador.next();
+			if (enemigo.hayColision(naveJugador)) {
+				pantallaEsperar.dibujarse(this.getGraphics());
+				esperar(3000);
+				iterador.remove();
+				// sonidos.tocarSonido("tic");
+				vidas.perderVida();
+			}
 		}
 	}
-*/
 	/*
-	 * // Se verifica si la cantidad de enemigos es 0 o si la cantidad de vidas es 0
-	 * // para parar el juego private void verificarFinDeJuego() {
-	 * 
-	 * if (vidas.getVidas() == 0) { pantallaActual = PANTALLA_PERDEDOR; }
-	 * 
-	 * if (enemigos.size() == 0) { pantallaActual = PANTALLA_GANADOR; } }
-	 * 
+	 * private void verificarSiPelotaTocaElPiso() { if (pelota.getPosicionY() +
+	 * pelota.getLargo() >= largoJuego) { //vidas.perderVida(); //pelota =
+	 * createPelota(); //sonidos.tocarSonido("muerte");
+	 * pantallaEsperar.dibujarse(this.getGraphics()); esperar(5000); } }
+	 */
+
+	// Se verifica si la cantidad de enemigos es 0 o si la cantidad de vidas es 0
+	// para parar el juego
+	private void verificarFinDeJuego() {
+		if (vidas.getVidas() == 0) {
+			pantallaActual = PANTALLA_PERDEDOR;
+		}
+		if (enemigos.size() == 0) {
+			pantallaActual = PANTALLA_GANADOR;
+		}
+	}
+
+	/*
 	 * // Se verifica si la pelota toca el piso, si es asi se pierde una vida, se
 	 * crea // una nueva pelota, se toca el sonido muerte y se muestra la pantalla
 	 * perdiste // y se esperan 5 segundos private void
@@ -398,10 +365,8 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 		Color color = new Color(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255));
 		double movX;
 		double movY;
-
 		for (int x = 1; x < enemigosPorLinea + 5; x++) {
 			if (x % 2 == 0) {
-
 				agregarEnemigo(new EnemigoVioleta(350 + x * 40, 20 + 4 * 10, 0.5, 0, 30, 30, color));
 			}
 		}
@@ -409,7 +374,6 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 		for (int x = 1; x < enemigosPorLinea + 4; x++) {
 			movX = 0.05;
 			movY = 0.02;
-
 			for (int y = 1; y < filasDeEnemigos + 4; y++) {
 				EnemigoRojoBlanco enemigoRojo = new EnemigoRojoBlanco(250 + x * 60, 65 + y * 20, movX, movY, 30, 30,
 						color);
@@ -425,7 +389,6 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 						enemigoRojo.setVelocidadY(-movY);
 					}
 					agregarEnemigo(enemigoRojo);
-
 				}
 			}
 		}
@@ -439,14 +402,11 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 					enemigo.setVelocidadX(-0.5);
 				}
 				if (y % 2 == 0) {
-
-					agregarEnemigo(
-							new EnemigoAzulAmarillo(190 + x * 60, 150 + y * 20, movX + 0.4, movY, 30, 30, color));
+					agregarEnemigo(new EnemigoAzulAmarillo(190 + x * 60, 150 + y * 20, movX + 0.4, movY, 30, 30, color));
 				}
 			}
-			movX *= (double) x / 90;
-			movY *= (double) x / 50;
 		}
+		
 		for (int x = 1; x < enemigosPorLinea + 6; x++) {
 			movX = 0.5;
 			movY = 0.9;
@@ -469,9 +429,9 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 					agregarEnemigo(enemigoAmarillo);
 				}
 			}
-
 		}
-
+		
 	}
+	
 
 }
