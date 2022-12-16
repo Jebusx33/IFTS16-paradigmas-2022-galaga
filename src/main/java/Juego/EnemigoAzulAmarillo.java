@@ -15,9 +15,8 @@ public class EnemigoAzulAmarillo extends Enemigo {
 	public EnemigoAzulAmarillo(int posicionX, int posicionY, double velocidadX, double velocidadY, int ancho, int largo,
 			Color color) {
 		super(posicionX, posicionY, velocidadX, velocidadY, ancho, largo, color);
-		String path = "D:/Agencia de Aprendizaje a lo largo de la vida/Paradigma/Naves-Sonido/src/main/resources/imagenes/Naves/enemigoAmarilloRojoAzul.png";
-		// String path =
-		// Paths.get(EnemigoImagen.class.getClassLoader().getResource("/imagenes/Naves/enemigoAmarilloRojoAzul.png").getPath()).toString();
+		String path = "D:/Agencia de Aprendizaje a lo largo de la vida/Paradigma/IFTS16-paradigmas-2022-galaga/src/main/resources/imagenes/Naves/enemigoAmarilloRojoAzul.png";
+		// String path =Paths.get(EnemigoAzulAmarillo.class.getClassLoader().getResource("imagenes/Naves/enemigoAmarilloRojoAzul.png").getPath()).toString();
 		try {
 			this.img = ImageIO.read(new File(path));
 		} catch (IOException e) {

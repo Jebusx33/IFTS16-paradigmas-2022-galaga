@@ -15,8 +15,7 @@ public class NaveJugador extends ElementoBasico {
 			Color color) {
 		super(posicionX, posicionY, velocidadX, velocidadY, ancho, largo, color);
 		String path = "D:/Agencia de Aprendizaje a lo largo de la vida/Paradigma/Naves-Sonido/src/main/resources/imagenes/Naves/galaga.png";
-		// String path =
-		// Paths.get(NaveJugador.class.getClassLoader().getResource("imagenes/Naves/nave2.png").getPath()).toString();
+		// String path =Paths.get(NaveJugador.class.getClassLoader().getResource("imagenes/Naves/galaga.png").getPath()).toString();
 		try {
 			this.img = ImageIO.read(new File(path));
 		} catch (IOException e) {
