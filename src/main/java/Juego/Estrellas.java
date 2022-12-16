@@ -3,16 +3,16 @@ package juego;
 import java.awt.Graphics;
 
 public abstract class Estrellas {
-    
+
 	protected int anchoVentana;
 	protected int largoVentana;
 	protected int posicionX;
 	protected int posicionY;
 	Graphics graphics;
-	
+
 	protected Estrellas() {
 	}
-	
+
 	protected Estrellas(Graphics graphics) {
 		this.graphics = graphics;
 	}
@@ -23,7 +23,6 @@ public abstract class Estrellas {
 		this.graphics = graphics;
 	}
 
-	
 	public Estrellas(int anchoVentana, int largoVentana, int posicionX, int posicionY, Graphics graphics) {
 		super();
 		this.anchoVentana = anchoVentana;
@@ -32,8 +31,6 @@ public abstract class Estrellas {
 		this.posicionY = posicionY;
 		this.graphics = graphics;
 	}
-
-
 
 	public int getAnchoVentana() {
 		return anchoVentana;
@@ -76,7 +73,5 @@ public abstract class Estrellas {
 	}
 
 	public abstract int multiplicar();
-	
-	
-	
+
 }

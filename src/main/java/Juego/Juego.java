@@ -29,7 +29,7 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 	private Puntaje puntaje;
 	private Vidas vidas;
 	private List<Enemigo> enemigos;
-	// private Sonidos sonidos;
+	private Sonidos sonidos;
 	private int pantallaActual;
 	private int enemigosPorLinea;
 	private int filasDeEnemigos;
@@ -39,7 +39,8 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 	private PantallaImagen pantallaEsperar;
 	private PantallaPerdedor pantallaPerdedor;
 
-	public Juego(int anchoJuego, int largoJuego, int tiempoDeEsperaEntreActualizaciones, int enemigosPorLinea,int filasDeEnemigos, int vidas) {
+	public Juego(int anchoJuego, int largoJuego, int tiempoDeEsperaEntreActualizaciones, int enemigosPorLinea,
+		int filasDeEnemigos, int vidas) {
 		this.pantallaActual = PANTALLA_INICIO;
 		this.anchoJuego = anchoJuego;
 		this.largoJuego = largoJuego;
@@ -54,8 +55,8 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 		this.portada = new PantallaImagen(anchoJuego, largoJuego, "imagenes/portada.png");
 		this.pantallaGanador = new PantallaImagen(anchoJuego, largoJuego, "imagenes/ganaste.png");
 		this.pantallaEsperar = new PantallaImagen(anchoJuego, largoJuego, "imagenes/esperar.png");
-		// cargarSonidos();
-		// this.sonidos.repetirSonido("background");
+		cargarSonidos();
+		this.sonidos.repetirSonido("background");
 		inicializarJuego();
 	}
 
@@ -121,7 +122,9 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 			// 0, -1, 6, 15, Color.yellow));
 			// disparos.add(new Disparo((naveJugador.getPosicionX()) + 51, largoJuego - 50,
 			// 0, -1, 6, 15, Color.yellow));
-			disparos.add(new Disparo((naveJugador.getPosicionX() - 18) + 51, largoJuego - 80, 0, -1, 6, 15, Color.yellow));
+			disparos.add(
+					new Disparo((naveJugador.getPosicionX() - 18) + 51, largoJuego - 80, 0, -1, 6, 15, Color.yellow));
+			sonidos.tocarSonido("laser");
 		}
 	}
 
@@ -188,13 +191,19 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 	}
 
 	// En ese metodo se cargan los sonidos que estan es src/main/resources
-	/*
-	 * private void cargarSonidos() { try { sonidos = new Sonidos();
-	 * sonidos.agregarSonido("toc", "sonidos/toc.wav"); sonidos.agregarSonido("tic",
-	 * "sonidos/tic.wav"); sonidos.agregarSonido("muerte", "sonidos/muerte.wav");
-	 * sonidos.agregarSonido("background", "sonidos/background.wav"); } catch
-	 * (Exception e1) { throw new RuntimeException(e1); } }
-	 */
+
+	private void cargarSonidos() {
+		try {
+			sonidos = new Sonidos();
+			sonidos.agregarSonido("cae", "sonidos/Cae1.wav");
+			sonidos.agregarSonido("laser", "sonidos/Laser.wav");
+			sonidos.agregarSonido("explocion", "sonidos/Explocion.wav");
+			sonidos.agregarSonido("background", "sonidos/background.wav");
+		} catch (Exception e1) {
+			throw new RuntimeException(e1);
+		}
+	}
+
 	private void dibujarInicioJuego(Graphics g) {
 		portada.dibujarse(g);
 	}
@@ -246,13 +255,6 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 		}
 	}
 
-	/*
-	 * // se verifica si hay colision entre la paleta y la pelota. Si hay colision
-	 * se // cambia la direccion de la pelota en el eje Y private void
-	 * verificarReboteEntrePelotaYPaleta() { if (paleta.hayColision(pelota)) {
-	 * pelota.rebotarEnEjeY(); sonidos.tocarSonido("toc"); } }
-	 */
-
 	// se verifica si hay colision de cada enemigo contra las paredes laterales,
 	// si hay colision se cambia la direccion del enemigo en el eje X private
 
@@ -279,7 +281,7 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 					iterador.remove();
 					disparo.setPosicionY(largoJuego - 1000);
 					puntaje.sumarPunto();
-					// sonidos.tocarSonido("tic");
+					sonidos.tocarSonido("explocion");
 				}
 			}
 
@@ -295,17 +297,11 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 				pantallaEsperar.dibujarse(this.getGraphics());
 				esperar(3000);
 				iterador.remove();
-				// sonidos.tocarSonido("tic");
+				sonidos.tocarSonido("explocion");
 				vidas.perderVida();
 			}
 		}
 	}
-	/*
-	 * private void verificarSiPelotaTocaElPiso() { if (pelota.getPosicionY() +
-	 * pelota.getLargo() >= largoJuego) { //vidas.perderVida(); //pelota =
-	 * createPelota(); //sonidos.tocarSonido("muerte");
-	 * pantallaEsperar.dibujarse(this.getGraphics()); esperar(5000); } }
-	 */
 
 	// Se verifica si la cantidad de enemigos es 0 o si la cantidad de vidas es 0
 	// para parar el juego
@@ -317,27 +313,6 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 			pantallaActual = PANTALLA_GANADOR;
 		}
 	}
-
-	/*
-	 * // Se verifica si la pelota toca el piso, si es asi se pierde una vida, se
-	 * crea // una nueva pelota, se toca el sonido muerte y se muestra la pantalla
-	 * perdiste // y se esperan 5 segundos private void
-	 * verificarSiPelotaTocaElPiso() { if (pelota.getPosicionY() + pelota.getLargo()
-	 * >= largoJuego) { vidas.perderVida(); pelota = createPelota();
-	 * sonidos.tocarSonido("muerte"); pantallaEsperar.dibujarse(this.getGraphics());
-	 * esperar(5000); } }
-	 * 
-	 * // se verifica si la pelota colisiona contra la pared lateral, si es asi, se
-	 * // hace rebotar la pelota en el eje X private void
-	 * verificarRebotePelotaContraParedLateral() { if (pelota.getPosicionX() <= 0 ||
-	 * pelota.getPosicionX() + pelota.getAncho() >= anchoJuego) {
-	 * pelota.rebotarEnEjeX(); sonidos.tocarSonido("toc"); } }
-	 * 
-	 * // se verifica si la pelota colisiona contra la pared superior, si es asi se
-	 * // hace rebotar la pelota en el eje Y /* private void
-	 * verificarRebotePelotaContraLaParedSuperior() { if (pelota.getPosicionY() <=
-	 * 0) { pelota.rebotarEnEjeY(); // sonidos.tocarSonido("toc"); } }
-	 */
 	// metodo para limpiar la pantalla
 	private void limpiarPantalla(Graphics graphics) {
 		graphics.setColor(Color.BLACK);
@@ -347,7 +322,7 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 
 	public void fondoEstrellasColores(Graphics g) {
 		EstrellasPequenias estrellasPequenias = new EstrellasPequenias(g);
-		estrellasPequenias.cantidadEstrellasPequeñas();
+		estrellasPequenias.cantidadEstrellasPequeias();
 		EstrellasGrandes estrellasGrandes = new EstrellasGrandes(g);
 		estrellasGrandes.cantidadEstrellasGrandes(g);
 	}
@@ -402,11 +377,12 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 					enemigo.setVelocidadX(-0.5);
 				}
 				if (y % 2 == 0) {
-					agregarEnemigo(new EnemigoAzulAmarillo(190 + x * 60, 150 + y * 20, movX + 0.4, movY, 30, 30, color));
+					agregarEnemigo(
+							new EnemigoAzulAmarillo(190 + x * 60, 150 + y * 20, movX + 0.4, movY, 30, 30, color));
 				}
 			}
 		}
-		
+
 		for (int x = 1; x < enemigosPorLinea + 6; x++) {
 			movX = 0.5;
 			movY = 0.9;
@@ -430,8 +406,7 @@ public class Juego extends JPanel implements KeyListener, Runnable {
 				}
 			}
 		}
-		
+
 	}
-	
 
 }

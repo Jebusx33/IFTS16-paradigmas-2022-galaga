@@ -29,11 +29,12 @@ public class EstrellasPequenias extends Estrellas {
 	public int multiplicar() {
 		return ThreadLocalRandom.current().nextInt(10, 1800);
 	}
-	
+
 	@Override
 	public int getPosicionX() {
 		return posicionX = multiplicar();
 	}
+
 	public void puntoRo() {
 		posicionY = multiplicar() * 3;
 		graphics.setColor(Color.RED);
@@ -77,7 +78,7 @@ public class EstrellasPequenias extends Estrellas {
 		graphics.fillOval(getPosicionX(), posicionY, 3, 3);
 	}
 
-	public void cantidadEstrellasPequeñas() {
+	public void cantidadEstrellasPequeias() {
 		puntoRo();
 		puntoGri();
 		puntoAz();
@@ -86,28 +87,13 @@ public class EstrellasPequenias extends Estrellas {
 		puntoBla();
 		puntoNa();
 		/*
-		int numRan = ThreadLocalRandom.current().nextInt(1, 100);
-		for (int i = 0; i < numRan; i++) {
-			puntoRo();
-			i++;
-		}
-		int numRandom = ThreadLocalRandom.current().nextInt(100, 500);
-		for (int i = 0; i < numRandom; i++) {
-			puntoGri();
-			puntoAz();
-			puntoAm();
-			puntoGriOsc();
-			i++;
-		}
-		int numRandoms = ThreadLocalRandom.current().nextInt(1, 200);
-		for (int i = 0; i < numRandoms; i++) {
-			puntoBla();
-			puntoNa();
-			i++;
-		}
-		*/
+		 * int numRan = ThreadLocalRandom.current().nextInt(1, 100); for (int i = 0; i <
+		 * numRan; i++) { puntoRo(); i++; } int numRandom =
+		 * ThreadLocalRandom.current().nextInt(100, 500); for (int i = 0; i < numRandom;
+		 * i++) { puntoGri(); puntoAz(); puntoAm(); puntoGriOsc(); i++; } int numRandoms
+		 * = ThreadLocalRandom.current().nextInt(1, 200); for (int i = 0; i <
+		 * numRandoms; i++) { puntoBla(); puntoNa(); i++; }
+		 */
 	}
-
-	
 
 }
